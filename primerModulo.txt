@@ -1,0 +1,14 @@
+{
+    "idcliente" : "1",
+    "idPedido" : "1",
+    "idPieza" : "1",
+    "idMaquina" : "1",
+    "fechainicio" : "0000-00-00 00:00:00",
+    "cantidad" : "3",
+    "colorPrimario" : "rojo",
+    "colorSecundario" : "",
+    "colorTerciario" : "",
+    "descripcion" : "",
+    "estado" : "1"
+
+}
