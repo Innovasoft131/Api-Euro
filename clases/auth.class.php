@@ -21,13 +21,15 @@ class Auth extends Conexion{
                 if($password == $dato[0]['password']){
                     if($dato[0]['estado'] == "1"){
                         // crear token
-                        $verifivar = $this->insertarToken($dato[0]['id']);
+                    //    $verifivar = $this->insertarToken($dato[0]['id']);
                         if($verifivar){
                             $res =  $respuestas->response;
                             $res['result'] = array(
-                                "token" => $verifivar,
+                                "idUsuario" => $dato[0]['id'],
                                 "usuario" => $dato[0]['usuario'],
-                                "foto" => $dato[0]['foto']
+                                "foto" => $dato[0]['foto'],
+                                "perfil" => $dato[0]['perfil'],
+                                "estado" => $dato[0]['estado']
                             );
                             return $res;
                         }else{

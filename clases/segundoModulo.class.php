@@ -14,10 +14,10 @@ class SegundoModulo extends Conexion{
     private $estado = "";
 
     public function mostrar($id){
-        $query = "select pm.id as idPrimerModulo, pm.idCliente, pm.idPedido, pm.idPieza, pm.idMaquina, pm.cantidad, pm.colorPrimario, pm.colorSecundario, pm.colorTerciario, pm.descripcion, pm.estado,
+        $query = "select pm.id as idPrimerModulo, pm.idCliente, pm.idPedido, pm.idPieza, pm.idMaquina, pm.cantidad, pm.colorPrimario, pm.colorSecundario, pm.colorTerciario, cp.id, cp.nombre, pm.descripcion, pm.estado,
         m.nombre, p.nombre as nombrePieza, p.idModelo, p.talla, p.foto, mo.nombre as nombreModelo, c.nombre as nombreCliente, sm.cantidadFinal
         from primerModulo pm join maquina m on pm.idMaquina=m.id join pieza p on p.id=pm.idPieza join modelo mo on mo.id=p.idModelo join clientes c on c.id=pm.idCliente
-        join segundoModulo sm on sm.idPrimerModulo=pm.id where (sm.estado='1' and pm.estado='1') and pm.idMaquina='".$id."'";
+        join segundoModulo sm on sm.idPrimerModulo=pm.id join colorPieza cp on cp.id = p.id  where (sm.estado='1' and pm.estado='1') and pm.idMaquina='".$id."'";
 
         $datos = parent::obtenerDatos($query);
         return $datos;
