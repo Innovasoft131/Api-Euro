@@ -22,6 +22,7 @@ class Auth extends Conexion{
                     if($dato[0]['estado'] == "1"){
                         // crear token
                     //    $verifivar = $this->insertarToken($dato[0]['id']);
+                        $verifivar = true;
                         if($verifivar){
                             $res =  $respuestas->response;
                             $res['result'] = array(
