@@ -5,7 +5,10 @@ require_once 'clases/respuestas.class.php';
 class SegundoModulo extends Conexion{
     private $id = "";
     private $idPrimerModulo = "";
+    private $idPedido = "";
+    private $idMaquinaProceso = "";
     private $descripcio = "";
+    private $idUsuario = "";
     private $cantidadInicio = "";
     private $cantidadFinal = "";
     private $fechainicio = "0000-00-00 00:00:00";
@@ -14,13 +17,39 @@ class SegundoModulo extends Conexion{
     private $estado = "";
 
     public function mostrar($id){
-        $query = "select pm.id as idPrimerModulo, pm.idCliente, pm.idPedido, pm.idPieza, pm.idMaquina, pm.cantidad, pm.colorPrimario, pm.colorSecundario, pm.colorTerciario, cp.id, cp.nombre, pm.descripcion, pm.estado,
-        m.nombre, p.nombre as nombrePieza, p.idModelo, p.talla, p.foto, mo.nombre as nombreModelo, c.nombre as nombreCliente, sm.cantidadFinal
-        from primerModulo pm join maquina m on pm.idMaquina=m.id join pieza p on p.id=pm.idPieza join modelo mo on mo.id=p.idModelo join clientes c on c.id=pm.idCliente
-        join segundoModulo sm on sm.idPrimerModulo=pm.id join colorPieza cp on cp.id = p.id  where (sm.estado='1' and pm.estado='1') and pm.idMaquina='".$id."'";
+        $query = 'select m.nombre as nombreMaquina, m.idUsuario as encargadoMaquina, pm.idPedido, pm.descripcion, pm.estado, pmd.idPieza, pmd.idColor, pmd.talla, pmd.cantidad, pmd.colorPrimario, pmd.colorSecundario,
+        pmd.colorTerciario, p.nombre as nombrePieza, p.idModelo, mo.nombre as nombreModelo, cp.idColor, c.nombre as NombreColor
+        from maquinasProceso mp join maquina m on mp.idMaquina=m.id join primerModulo pm on mp.idPrimerModulo= pm.id join primerModuloDesglose pmd on pm.id=pmd.idPrimerModulo
+        join pieza p on pmd.idPieza=p.id join modelo mo on mo.id=p.idModelo join colorPieza cp on cp.id=pmd.idColor join color c on c.id=cp.idColor
+        where mp.idMaquina="'.$id.'" and pm.estado="1"';
 
         $datos = parent::obtenerDatos($query);
         return $datos;
+    }
+
+    public function mostrarSegundoModulo($estado){
+        $query = 'select pm.id as folio, pm.descripcion, pmd.idPieza, p.nombre as nombrePieza, pmd.idColor, pmd.talla, pmd.cantidad, pm.estado, pmd.colorPrimario, pmd.colorSecundario, pmd.colorTerciario
+        from primerModulo pm join primerModuloDesglose pmd on pm.id=pmd.idPrimerModulo join pieza p on pmd.idPieza=p.id Where pm.estado="'.$estado.'"';
+
+        $respuesta = parent::obtenerDatos($query);
+
+        return $respuesta;
+    }
+
+    public function obtenerMaquina($idPrimerModulo){
+        $query = 'select mp.idMaquina, m.nombre from maquinasProceso mp join maquina m on mp.idPrimerModulo=m.id where idPrimerModulo="'.$idPrimerModulo.'"';
+
+        $respuesta = parent::obtenerDatos($query);
+
+        return $respuesta;
+    }
+
+    public function obtenerColor($idPieza){
+        $query = 'select c.nombre as nombreColor from color c join colorPieza cp on c.id=cp.idColor where idPieza= "'.$idPieza.'"';
+
+        $respuesta = parent::obtenerDatos($query);
+
+        return $respuesta;
     }
 
     public function insert($json){
@@ -29,7 +58,10 @@ class SegundoModulo extends Conexion{
 
         if(!isset($datos['id']) ||
             !isset($datos['idPrimerModulo']) ||
+            !isset($datos['idPedido']) ||
+            !isset($datos['idMaquinaProceso']) ||
             !isset($datos['descripcio']) ||
+            !isset($datos['idUsuario']) ||
             !isset($datos['cantidadInicio']) ||
             !isset($datos['cantidadFinal']) ||
             !isset($datos['fechainicio']) ||
@@ -40,7 +72,10 @@ class SegundoModulo extends Conexion{
         }else {
             $this->id = $datos['id'];
             $this->idPrimerModulo = $datos['idPrimerModulo'];
+            $this->idPedido = $datos['idPedido'];
+            $this->idMaquinaProceso = $datos['idMaquinaProceso'];
             $this->descripcio = $datos['descripcio'];
+            $this->idUsuario = $datos['idUsuario'];
             $this->cantidadInicio = $datos['cantidadInicio'];
             $this->cantidadFinal = $datos['cantidadFinal'];
             $this->fechainicio = $datos['fechainicio'];
@@ -63,8 +98,8 @@ class SegundoModulo extends Conexion{
     }
 
     private function insertar(){
-        $query = "INSERT INTO segundoModulo(id, idPrimerModulo, descripcio, cantidadInicio, cantidadFinal, fechainicio, fechaFin, fusion, estado) VALUES".
-        "('".$this->id."', '".$this->idPrimerModulo."', '".$this->descripcio."', '".$this->cantidadInicio."', '".$this->fechainicio."', '".$this->fechaFin."', '".$this->fusion."', '".$this->estado."')";
+        $query = "INSERT INTO segundoModulo(id, idPrimerModulo, idPedido, idMaquinaProceso, descripcio, idUsuario, cantidadInicio, cantidadFinal, fechainicio, fechaFin, fusion, estado) VALUES".
+        "('".$this->id."', '".$this->idPrimerModulo."', '".$this->idPedido."', '".$this->idMaquinaProceso."', '".$this->descripcio."', '".$this->idUsuario."', '".$this->cantidadInicio."', '".$this->fechainicio."', '".$this->fechaFin."', '".$this->fusion."', '".$this->estado."')";
         $res = parent::nonQueryId($query);
 
         if($res == "ok"){
@@ -81,7 +116,10 @@ class SegundoModulo extends Conexion{
 
         if(!isset($datos['id']) ||
             !isset($datos['idPrimerModulo']) ||
+            !isset($datos['idPedido']) ||
+            !isset($datos['idMaquinaProceso']) ||
             !isset($datos['descripcio']) ||
+            !isset($datos['idUsuario']) ||
             !isset($datos['cantidadInicio']) ||
             !isset($datos['cantidadFinal']) ||
             !isset($datos['fechainicio']) ||
@@ -92,7 +130,10 @@ class SegundoModulo extends Conexion{
         }else {
             $this->id = $datos['id'];
             $this->idPrimerModulo = $datos['idPrimerModulo'];
+            $this->idPedido = $datos['idPedido'];
+            $this->idMaquinaProceso = $datos['idMaquinaProceso'];
             $this->descripcio = $datos['descripcio'];
+            $this->idUsuario = $datos['idUsuario'];
             $this->cantidadInicio = $datos['cantidadInicio'];
             $this->cantidadFinal = $datos['cantidadFinal'];
             $this->fechainicio = $datos['fechainicio'];
@@ -115,7 +156,7 @@ class SegundoModulo extends Conexion{
     }
 
     private function modificar(){
-        $query = "UPDATE segundoModulo SET idPrimerModulo= '".$this->idPrimerModulo."', descripcio='".$this->descripcio."', cantidadInicio= '".$this->cantidadInicio."', cantidadFinal='".$this->cantidadFinal."', fechainicio= '".$this->fechainicio."', fechaFin= '".$this->fechaFin."', fusion='".$this->fusion."', estado='".$this->estado."' WHERE id='".$this->id."'";
+        $query = 'UPDATE segundoModulo SET idPrimerModulo= "'.$this->idPrimerModulo.'", idPedido="'.$this->idPedido.'", idMaquinaProceso="'.$this->idMaquinaProceso.'", descripcio="'.$this->descripcio.'", idUsuario="'.$this->idUsuario.'", cantidadInicio= "'.$this->cantidadInicio.'", cantidadFinal="'.$this->cantidadFinal.'", fechainicio= "'.$this->fechainicio.'", fechaFin= "'.$this->fechaFin.'", fusion="'.$this->fusion.'", estado="'.$this->estado.'" WHERE id="'.$this->id.'"';
         $res = parent::nonQueryId($query);
 
         if($res == "ok"){

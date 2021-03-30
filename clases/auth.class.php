@@ -2,7 +2,7 @@
 require_once 'conexion/conexion.php';
 require_once 'respuestas.class.php';
 class Auth extends Conexion{
-
+ 
     public function login($json){
         $respuestas = new Respuestas();
         $datos = json_decode($json,true);
@@ -22,7 +22,7 @@ class Auth extends Conexion{
                     if($dato[0]['estado'] == "1"){
                         // crear token
                     //    $verifivar = $this->insertarToken($dato[0]['id']);
-                        $verifivar = true;
+                    $verifivar = true;
                         if($verifivar){
                             $res =  $respuestas->response;
                             $res['result'] = array(
@@ -42,7 +42,7 @@ class Auth extends Conexion{
                     }
                 }else{
                     // la contraseña es incorrecta
-                    return $respuestas->error_200("El password ".$datos['password']." es incorrecta");
+                    return $respuestas->error_200("El contraseña  es incorrecta");
                 }
                 
             }else{
