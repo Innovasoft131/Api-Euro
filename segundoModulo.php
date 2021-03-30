@@ -2,7 +2,7 @@
 
 require_once 'clases/respuestas.class.php';
 require_once 'clases/segundoModulo.class.php';
-
+ 
 $respuestas = new Respuestas();
 $segundoModulo = new SegundoModulo();
 
@@ -16,6 +16,37 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
         http_response_code(200);
       
         echo json_encode($datos);
+    }elseif(isset($_GET["estado"])){
+        // obtener datos del segundo modulo con estado
+        $estado = $_GET["estado"];
+
+        $datos = $segundoModulo -> mostrarSegundoModulo($estado);
+        header('Content-Type: application/json');
+        http_response_code(200);
+      
+        echo json_encode($datos);
+
+    }elseif(isset($_GET["idPieza"])){
+        // obtener colores de la pieza
+        $idPieza = $_GET["idPieza"];
+
+        $respuesta = $segundoModulo ->obtenerColor($idPieza);
+        header('Content-Type: application/json');
+        http_response_code(200);
+      
+        echo json_encode($respuesta);
+
+    }elseif(isset($_GET["idPrimerModulo"])){
+        // obtener maquinas asignadas
+        $idPrimerModulo = $_GET["idPrimerModulo"];
+
+        $respuesta = $segundoModulo ->obtenerMaquina($idPrimerModulo);
+
+        header('Content-Type: application/json');
+        http_response_code(200);
+      
+        echo json_encode($respuesta);
+
     }else {
         header('Content-Type: application/json');
         $datosArr = $respuestas->error_405();   
