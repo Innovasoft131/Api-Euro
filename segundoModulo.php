@@ -10,12 +10,32 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
 
     if(isset($_GET['id'])){
         $id = $_GET['id'];
+      //  $datos = $segundoModulo->mostrar($id);
 
-        $datos = $segundoModulo->mostrar($id);
+        $datosPm = $segundoModulo->mostrarPrimerModulo($id);
+        
+        $desglosePm = $segundoModulo -> primerModuloDesglose($datosPm["idPrimerModulo"], $id);
+        //$id,$datosPm["idPrimerModulo"]
+        $maquina = $segundoModulo -> maquina($id,$datosPm["idPrimerModulo"]);
+
+        $modelo = $segundoModulo -> modelo($id,$datosPm["idPrimerModulo"]);
+
+        $color = $segundoModulo -> color($id);
+
+        $respuesta = array(
+            "primerModulo" => $datosPm,
+            "PrimerModuloDesglose" => $desglosePm,
+            "Maquina" => $maquina,
+            "Modelo" => $modelo,
+            "color" => $color
+        );
+
         header('Content-Type: application/json');
         http_response_code(200);
+
+
       
-        echo json_encode($datos);
+        echo json_encode($respuesta);
     }elseif(isset($_GET["estado"])){
         // obtener datos del segundo modulo con estado
         $estado = $_GET["estado"];

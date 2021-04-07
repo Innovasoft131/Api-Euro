@@ -27,6 +27,53 @@ class SegundoModulo extends Conexion{
         return $datos;
     }
 
+    public function mostrarPrimerModulo($id){
+        $query = 'select pm.idPedido, pm.id as idPrimerModulo, pm.descripcion from primerModulo pm join maquinasProceso  mp on mp.idPrimerModulo=pm.id 
+        where mp.idMaquina="'.$id.'"';
+
+        $datos = parent::obtenerDatos($query);
+
+        return $datos;
+    }
+
+    public function primerModuloDesglose($id,$idMaquina){
+        $query = 'select pmd.idPrimerModulo, pmd.idPieza, pmd.idColor, pmd.idTalla, pmd.idModelo, pmd.cantidad, pmd.colorPrimario, pmd.colorSecundario, pmd.colorTerciario, p.nombre as nombrePieza, pt.talla from primerModuloDesglose pmd join pieza p on p.id=pmd.idPieza 
+        join primerModulo pm on pm.id=pmd.idPrimerModulo join maquinasProceso  mp on mp.idPrimerModulo=pm.id join piezaTalla pt on pt.id = pmd.idTalla
+        where pmd.idPrimerModulo ="'.$id.'" and and mp.idMaquina="'.$idMaquina.'"';
+
+        $datos = parent::obtenerDatos($query);
+
+        return $datos;
+    }
+
+    public function maquina($id, $idPrimerModulo){
+        $query = 'select m.nombre from maquinasProceso mp Join  maquina m on m.id=mp.idMaquina join primerModulo pm on pm.id=mp.idPrimerModulo 
+        where mp.idMaquina = "'.$id.'" and pm.id="'.$idPrimerModulo.'"';
+
+        $datos = parent::obtenerDatos($query);
+
+        return $datos;
+    }
+
+    public function modelo($id, $idPrimerModulo){
+        $query = 'select m.nombre as nombreModelo from piezaModelo pm join primerModuloDesglose pmd on pmd.idModelo=pm.id join modelo m on m.id=pmd.idModelo join maquinasProceso  mp on mp.idPrimerModulo=pm.id 
+        where mp.idMaquina "'.$id.'" and pmd.idPrimerModulo="'.$idPrimerModulo.'"';
+
+        $datos = parent::obtenerDatos($query);
+
+        return $datos;
+    }
+
+    public function color($id){
+        $query = ' select distinct c.nombre as nombreColor from color c join colorPieza cp on c.id=cp.idColor 
+        where c.id="'.$id.'"';
+
+        $datos = parent::obtenerDatos($query);
+
+        return $datos;
+    }
+
+
     public function mostrarSegundoModulo($estado){
         $query = 'select pm.id as folio, pm.descripcion, pmd.idPieza, p.nombre as nombrePieza, pmd.idColor, pmd.talla, pmd.cantidad, pm.estado, pmd.colorPrimario, pmd.colorSecundario, pmd.colorTerciario
         from primerModulo pm join primerModuloDesglose pmd on pm.id=pmd.idPrimerModulo join pieza p on pmd.idPieza=p.id Where pm.estado="'.$estado.'"';
