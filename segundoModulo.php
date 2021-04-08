@@ -10,16 +10,35 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
 
     if(isset($_GET['id'])){
         $id = $_GET['id'];
-      //  $datos = $segundoModulo->mostrar($id);
-
+        $datos = $segundoModulo->mostrar($id);
+        /*
         $datosPm = $segundoModulo->mostrarPrimerModulo($id);
+        $idPrimerModulo = array();
+        $desglosePm = array();
+        $idpedido = array();
+        foreach ($datosPm as $key => $value) {
+            $desglosePm[$key]= $segundoModulo -> primerModuloDesglose($value["idPrimerModulo"], $id);
+
+            $idpedido[$key] = $value["idPedido"];
+            $idPrimerModulo[$key] = $value["idPrimerModulo"];
+            
+        }
         
-        $desglosePm = $segundoModulo -> primerModuloDesglose($datosPm["idPrimerModulo"], $id);
+    
         //$id,$datosPm["idPrimerModulo"]
-        $maquina = $segundoModulo -> maquina($id,$datosPm["idPrimerModulo"]);
+   
 
-        $modelo = $segundoModulo -> modelo($id,$datosPm["idPrimerModulo"]);
+            $maquina = $segundoModulo -> maquina($id);
 
+            
+
+            
+            
+        
+        
+
+            $modelo = $segundoModulo -> modelo($id);
+        
         $color = $segundoModulo -> color($id);
 
         $respuesta = array(
@@ -29,13 +48,13 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
             "Modelo" => $modelo,
             "color" => $color
         );
-
+        */
         header('Content-Type: application/json');
         http_response_code(200);
 
 
       
-        echo json_encode($respuesta);
+        echo json_encode($datos);
     }elseif(isset($_GET["estado"])){
         // obtener datos del segundo modulo con estado
         $estado = $_GET["estado"];

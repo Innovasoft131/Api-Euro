@@ -17,11 +17,9 @@ class SegundoModulo extends Conexion{
     private $estado = "";
 
     public function mostrar($id){
-        $query = 'select m.nombre as nombreMaquina, m.idUsuario as encargadoMaquina, pm.idPedido, pm.descripcion, pm.estado, pmd.idPieza, pmd.idColor, pmd.talla, pmd.cantidad, pmd.colorPrimario, pmd.colorSecundario,
-        pmd.colorTerciario, p.nombre as nombrePieza, p.idModelo, mo.nombre as nombreModelo, cp.idColor, c.nombre as NombreColor
-        from maquinasProceso mp join maquina m on mp.idMaquina=m.id join primerModulo pm on mp.idPrimerModulo= pm.id join primerModuloDesglose pmd on pm.id=pmd.idPrimerModulo
-        join pieza p on pmd.idPieza=p.id join modelo mo on mo.id=p.idModelo join colorPieza cp on cp.id=pmd.idColor join color c on c.id=cp.idColor
-        where mp.idMaquina="'.$id.'" and pm.estado="1"';
+        $query = 'select pm.idPedido, pm.id as idPrimerModulo, pmd.id as idprimerModuloDesglose, mp.id as idmaquinasProceso, pmd.idPieza, p.nombre as NombrePieza, pmd.idModelo, pmd.idTalla,  mo.nombre as NombreModelo, mp.cantidad, pt.talla as tallaPieza, pmd.idColor, c.nombre as nombreColor  from primerModulo pm join primerModuloDesglose pmd on pm.id=pmd.idPrimerModulo join maquinasProceso mp on mp.idPrimerModuloD=pmd.id 
+        join piezaModelo m on pmd.idModelo = m.id join modelo mo on m.idModelo=mo.id join piezaTalla pt on pt.id=pmd.idTalla join pieza p on pmd.idPieza = p.id join colorPieza cp on cp.id = pmd.idColor join color c on cp.idColor = c.id
+        where mp.idMaquina="'.$id.'"';
 
         $datos = parent::obtenerDatos($query);
         return $datos;
@@ -36,28 +34,30 @@ class SegundoModulo extends Conexion{
         return $datos;
     }
 
-    public function primerModuloDesglose($id,$idMaquina){
-        $query = 'select pmd.idPrimerModulo, pmd.idPieza, pmd.idColor, pmd.idTalla, pmd.idModelo, pmd.cantidad, pmd.colorPrimario, pmd.colorSecundario, pmd.colorTerciario, p.nombre as nombrePieza, pt.talla from primerModuloDesglose pmd join pieza p on p.id=pmd.idPieza 
-        join primerModulo pm on pm.id=pmd.idPrimerModulo join maquinasProceso  mp on mp.idPrimerModulo=pm.id join piezaTalla pt on pt.id = pmd.idTalla
-        where pmd.idPrimerModulo ="'.$id.'" and and mp.idMaquina="'.$idMaquina.'"';
+    public function primerModuloDesglose($idPedido,$id){
+        $query = 'select pmd.* from primerModuloDesglose pmd join maquinasProceso mp on pmd.id=mp.idPrimerModuloD join primerModulo pm on pm.id=pmd.idPrimerModulo  
+        where mp.idMaquina="'.$id.'" and pm.idPedido="'.$idPedido.'"';
+
+     
+        $datos = parent::obtenerDatos($query);
+
+        return $datos;
+    }
+
+    public function maquina($id){
+        $query = 'select nombre from maquina where id="'.$id.'"';
 
         $datos = parent::obtenerDatos($query);
 
         return $datos;
     }
 
-    public function maquina($id, $idPrimerModulo){
-        $query = 'select m.nombre from maquinasProceso mp Join  maquina m on m.id=mp.idMaquina join primerModulo pm on pm.id=mp.idPrimerModulo 
-        where mp.idMaquina = "'.$id.'" and pm.id="'.$idPrimerModulo.'"';
+    public function modelo($id){
+        $query = 'select pm.idPedido, pm.id as idPrimerModulo, pmd.id as idprimerModuloDesglose, mp.id as idmaquinasProceso,  pmd.idModelo, mo.nombre as NombreModelo from primerModulo pm join primerModuloDesglose pmd on pm.id=pmd.idPrimerModulo join maquinasProceso mp on mp.idPrimerModuloD=pmd.id 
+        join piezaModelo m on pmd.idModelo = m.id join modelo mo on m.idModelo=mo.id
+        where mp.idMaquina="'.$id.'"';
 
-        $datos = parent::obtenerDatos($query);
 
-        return $datos;
-    }
-
-    public function modelo($id, $idPrimerModulo){
-        $query = 'select m.nombre as nombreModelo from piezaModelo pm join primerModuloDesglose pmd on pmd.idModelo=pm.id join modelo m on m.id=pmd.idModelo join maquinasProceso  mp on mp.idPrimerModulo=pm.id 
-        where mp.idMaquina "'.$id.'" and pmd.idPrimerModulo="'.$idPrimerModulo.'"';
 
         $datos = parent::obtenerDatos($query);
 
