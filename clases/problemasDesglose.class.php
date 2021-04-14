@@ -41,7 +41,7 @@ class ProblemasDesglose extends Conexion{
 
     private function insertar(){
         $query = "INSERT INTO problemasDesglose(id, idProblemaProce, idProblema, problema) VALUES
-        (NULL, ".$this->id.", ".$this->idProblemaProce.", ".$this->idProblema.", '".$this->problema."')";
+        (NULL, ".$this->idProblemaProce.", ".$this->idProblema.", '".$this->problema."')";
 
         
         $res = parent::nonQueryId($query);
