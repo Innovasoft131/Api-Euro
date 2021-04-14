@@ -139,9 +139,11 @@ class SegundoModulo extends Conexion{
 
             $res = $this->insertar();
 
-            if($res == "ok"){
+            
+            if($res > 0){
                 $respuesta = $respuestas -> response;
                     $respuesta['result'] = array(
+                        "idSegundoModulo" => $res,
                         "resultado" => "Guardado"
                     );
                     return $respuesta;
@@ -152,15 +154,18 @@ class SegundoModulo extends Conexion{
     }
 
     private function insertar(){
-        $query = "INSERT INTO segundoModulo(id, idPrimerModulo, idPedido, idMaquinaProceso, descripcio, idUsuario, cantidadInicio, cantidadFinal, fechainicio, fechaFin, fusion, estado) VALUES".
-        "('".$this->id."', '".$this->idPrimerModulo."', '".$this->idPedido."', '".$this->idMaquinaProceso."', '".$this->descripcio."', '".$this->idUsuario."', '".$this->cantidadInicio."', '".$this->fechainicio."', '".$this->fechaFin."', '".$this->fusion."', '".$this->estado."')";
-        $res = parent::nonQueryId($query);
-
-        if($res == "ok"){
-           return "ok";
+        if($this->descripcio == null || $this->descripcio == "" || $this->fechaFin == null || $this->fechaFin == ""){
+            $query = "INSERT INTO segundoModulo(id, idPrimerModulo, idPedido, idMaquinaProceso, descripcio, idUsuario, cantidadInicio, cantidadFinal, fechainicio, fechaFin, fusion, estado) VALUES".
+            "(null, ".$this->idPrimerModulo.", ".$this->idPedido.", ".$this->idMaquinaProceso.", null, ".$this->idUsuario.", ".$this->cantidadInicio.", ".$this->cantidadFinal.", '".$this->fechainicio."', null, '".$this->fusion."', '".$this->estado."'  )";
         }else{
-            return "error";
+            $query = "INSERT INTO segundoModulo(id, idPrimerModulo, idPedido, idMaquinaProceso, descripcio, idUsuario, cantidadInicio, cantidadFinal, fechainicio, fechaFin, fusion, estado) VALUES".
+            "(null, ".$this->idPrimerModulo.", ".$this->idPedido.", ".$this->idMaquinaProceso.", '".$this->descripcio."', ".$this->idUsuario.", ".$this->cantidadInicio.", ".$this->cantidadFinal.", '".$this->fechainicio."', '".$this->fechaFin."', '".$this->fusion."', '".$this->estado."'  )";
         }
+       
+        $res = parent::nonQueryIds($query);
+
+
+        return $res;
     }
 
 
