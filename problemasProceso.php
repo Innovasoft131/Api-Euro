@@ -10,7 +10,7 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
 }elseif ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // recibimos datos
     $postBody = file_get_contents("php://input");
-
+ 
     //enviamos los datos a procesar
     $res = $problemasProceso->insert($postBody);
     // devolvemos una respuesta

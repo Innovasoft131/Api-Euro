@@ -27,10 +27,11 @@ class ProblemasProceso extends Conexion{
             $this->idtercerModulo = $datos['idtercerModulo'];
 
             $res = $this->insertar();
-
-            if($res == "ok"){
+        
+            if($res > 1){
                 $respuesta = $respuestas -> response;
                     $respuesta['result'] = array(
+                        "idProblemaProceso" => $res,
                         "resultado" => "Guardado"
                     );
                     return $respuesta;
@@ -41,15 +42,12 @@ class ProblemasProceso extends Conexion{
     }
 
     private function insertar(){
-        $query "INSERT INTO problemasProceso(id, idPedido, idprimerModulo, idSegundoModulo, idtercerModulo) VALUES
-        (null, ".$this->idPedido.", ".$this->idprimerModulo.", ".$this->idSegundoModulo.", ".$this->idtercerModulo.")";
+        $query = 'INSERT INTO problemasProceso(id, idPedido, idprimerModulo, idSegundoModulo, idtercerModulo) VALUES
+        (null, '.$this->idPedido.', '.$this->idprimerModulo.', '.$this->idSegundoModulo.', '.$this->idtercerModulo.')';
 
-        $res = parent::nonQueryId($query);
 
-        if($res == "ok"){
-        return "ok";
-        }else{
-            return "error";
-        }
+        $res = parent::nonQueryIds($query);
+
+        return $res;
     }
 }

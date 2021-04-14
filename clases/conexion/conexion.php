@@ -95,6 +95,26 @@ class Conexion{
 
     }
 
+    public function nonQueryIds($sqlString){
+
+        $cn = $this->conexion;
+        $results = $cn->prepare($sqlString);
+        
+        
+
+        
+        if($results->execute()){
+            $filas = $cn->lastInsertId();
+            return $filas;
+        }else{
+            return "error";
+        }
+
+        $results->close();
+        $results = null;
+
+    }
+
     // encriptar
 
     protected function encriptar($password){
