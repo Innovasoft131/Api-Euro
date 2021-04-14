@@ -100,7 +100,7 @@ class Conexion{
         $cn = $this->conexion;
         $results = $cn->prepare($sqlString);
         
-        var_dump($sqlString);
+     
 
         
         if($results->execute()){
