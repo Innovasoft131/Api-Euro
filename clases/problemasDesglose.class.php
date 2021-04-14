@@ -52,4 +52,18 @@ class ProblemasDesglose extends Conexion{
             return "error";
         }
     }
+
+    public function problemas(){
+        $query = "SELECT * FROM problemas";
+
+        $res = parent::obtenerDatos($query);
+
+        if($res == null || $res == ""){
+            return $respuestas->error_500("Datos no encontrados");
+        }else{
+            return $res;
+        }
+        
+
+    }
 }

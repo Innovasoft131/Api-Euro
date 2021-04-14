@@ -6,6 +6,17 @@ $respuestas = new Respuestas();
 $problemasDesglose = new problemasDesglose();
 
 if($_SERVER['REQUEST_METHOD'] == 'GET'){
+    if(isset($_GET["accion"])){
+        $accion = $_GET["accion"];
+        $datos = $problemasDesglose->problemas($accion);
+        header('Content-Type: application/json');
+        http_response_code(200);
+
+
+      
+        echo json_encode($datos);
+
+    }
 
 }elseif ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // recibimos datos
