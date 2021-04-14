@@ -42,7 +42,7 @@ class ProblemasProceso extends Conexion{
 
     private function insertar(){
         $query "INSERT INTO problemasProceso(id, idPedido, idprimerModulo, idSegundoModulo, idtercerModulo) VALUES
-        (null, ".$this->id.", ".$this->idPedido.", ".$this->idprimerModulo.", ".$this->idSegundoModulo.", ".$this->idtercerModulo.")";
+        (null, ".$this->idPedido.", ".$this->idprimerModulo.", ".$this->idSegundoModulo.", ".$this->idtercerModulo.")";
 
         $res = parent::nonQueryId($query);
 
