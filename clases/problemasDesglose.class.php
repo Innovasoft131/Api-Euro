@@ -53,13 +53,14 @@ class ProblemasDesglose extends Conexion{
         }
     }
 
-    public function problemas(){
-        $query = "SELECT * FROM problemas";
+    public function problemas($tabla){
+        $respuestas = new Respuestas();
+        $query = "SELECT * FROM $tabla";
 
         $res = parent::obtenerDatos($query);
 
         if($res == null || $res == ""){
-            return $respuestas->error_500("Datos no encontrados");
+            return $respuestas->error_400("Datos no encontrados o con formato incorrecto");
         }else{
             return $res;
         }

@@ -7,8 +7,8 @@ $problemasDesglose = new problemasDesglose();
 
 if($_SERVER['REQUEST_METHOD'] == 'GET'){
     if(isset($_GET["accion"])){
-        $accion = $_GET["accion"];
-        $datos = $problemasDesglose->problemas($accion);
+        $tabla = $_GET["accion"];
+        $datos = $problemasDesglose->problemas($tabla);
         header('Content-Type: application/json');
         http_response_code(200);
 
