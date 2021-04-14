@@ -18,14 +18,14 @@ class SegundoModulo extends Conexion{
 
     public function mostrar($id){
         $respuestas = new Respuestas();
-        $query = 'select pm.idPedido, pm.id as idPrimerModulo, pmd.id as idprimerModuloDesglose, mp.id as idmaquinasProceso, pmd.idPieza, p.nombre as NombrePieza, p.idModelo, pmd.idTalla,  mo.nombre as NombreModelo, mp.cantidad, pt.talla as tallaPieza, pmd.idColor, c.nombre as nombreColor  from primerModulo pm join primerModuloDesglose pmd on pm.id=pmd.idPrimerModulo join maquinasProceso mp on mp.idPrimerModuloD=pmd.id 
-        join piezaTalla pt on pt.id=pmd.idTalla join pieza p on pmd.idPieza = p.id join modelo mo on p.idModelo=mo.id join colorPieza cp on cp.id = pmd.idColor join color c on cp.idColor = c.id
+        $query = 'select pm.idPedido, pm.id as idPrimerModulo, pmd.id as idprimerModuloDesglose, mp.id as idmaquinasProceso, pmd.idPieza, p.nombre as NombrePieza, p.idModelo, pmd.idTalla,  mo.nombre as NombreModelo, mp.cantidad, pt.talla as tallaPieza, pmd.idColor, c.nombre as nombreColor, ph.fecha as fechaPedido  from primerModulo pm join primerModuloDesglose pmd on pm.id=pmd.idPrimerModulo join maquinasProceso mp on mp.idPrimerModuloD=pmd.id 
+        join piezaTalla pt on pt.id=pmd.idTalla join pieza p on pmd.idPieza = p.id join modelo mo on p.idModelo=mo.id join colorPieza cp on cp.id = pmd.idColor join color c on cp.idColor = c.id join pedidosHechos ph on pm.idPedido=ph.id
         where mp.idMaquina="'.$id.'"';
 
         $datos = parent::obtenerDatos($query);
 
         if($datos == null || $datos == ""){
-            return $respuestas->error_500("Datos no encontrados");
+            return $respuestas->error_400("Datos no encontrados");
         }else{
             return $datos;
         }
