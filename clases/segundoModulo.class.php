@@ -122,6 +122,7 @@ class SegundoModulo extends Conexion{
             !isset($datos['fechaFin']) ||
             !isset($datos['fusion']) ||
             !isset($datos['estado'])){
+                var_dump($datos);
                 return $respuestas->error_400();
         }else {
             $this->id = $datos['id'];
@@ -154,14 +155,14 @@ class SegundoModulo extends Conexion{
     }
 
     private function insertar(){
-        if($this->descripcio == null || $this->descripcio == "" || $this->fechaFin == null || $this->fechaFin == ""){
+        if($this->descripcio == null || $this->descripcio == "" || $this->fechaFin == null || $this->fechaFin == "" || $this->fusion == null || $this->fusion == ""){
             $query = "INSERT INTO segundoModulo(id, idPrimerModulo, idPedido, idMaquinaProceso, descripcio, idUsuario, cantidadInicio, cantidadFinal, fechainicio, fechaFin, fusion, estado) VALUES".
-            "(null, ".$this->idPrimerModulo.", ".$this->idPedido.", ".$this->idMaquinaProceso.", null, ".$this->idUsuario.", ".$this->cantidadInicio.", ".$this->cantidadFinal.", '".$this->fechainicio."', null, '".$this->fusion."', '".$this->estado."'  )";
+            "(null, ".$this->idPrimerModulo.", ".$this->idPedido.", ".$this->idMaquinaProceso.", null, ".$this->idUsuario.", ".$this->cantidadInicio.", ".$this->cantidadFinal.", now(), null, null, '".$this->estado."'  )";
         }else{
             $query = "INSERT INTO segundoModulo(id, idPrimerModulo, idPedido, idMaquinaProceso, descripcio, idUsuario, cantidadInicio, cantidadFinal, fechainicio, fechaFin, fusion, estado) VALUES".
             "(null, ".$this->idPrimerModulo.", ".$this->idPedido.", ".$this->idMaquinaProceso.", '".$this->descripcio."', ".$this->idUsuario.", ".$this->cantidadInicio.", ".$this->cantidadFinal.", '".$this->fechainicio."', '".$this->fechaFin."', '".$this->fusion."', '".$this->estado."'  )";
         }
-       
+        var_dump($query);
         $res = parent::nonQueryIds($query);
 
 
