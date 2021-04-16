@@ -86,6 +86,17 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
       
         echo json_encode($respuesta);
 
+    }elseif(isset($_GET["idMaquinaProceso"])){
+        $idMaquinaProceso = $_GET["idMaquinaProceso"];
+
+        $respuesta = $segundoModulo ->obtenerSegundoModulo($idMaquinaProceso);
+
+        header('Content-Type: application/json');
+        http_response_code(200);
+      
+        echo json_encode($respuesta);
+
+
     }else {
         header('Content-Type: application/json');
         $datosArr = $respuestas->error_405();   

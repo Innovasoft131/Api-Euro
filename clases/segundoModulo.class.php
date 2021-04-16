@@ -32,6 +32,19 @@ class SegundoModulo extends Conexion{
         
     }
 
+    public function obtenerSegundoModulo($idMaquinaProceso){
+        $query 'select * from segundoModulo where idMaquinaProceso="'.$idMaquinaProceso.'"';
+
+        $datos = parent::obtenerDatos($query);
+
+        if($datos == null || $datos == ""){
+            return $respuestas->error_400("Datos no encontrados");
+        }else{
+            return $datos;
+        }
+
+    }
+
     public function mostrarPrimerModulo($id){
         $query = 'select pm.idPedido, pm.id as idPrimerModulo, pm.descripcion from primerModulo pm join maquinasProceso  mp on mp.idPrimerModulo=pm.id 
         where mp.idMaquina="'.$id.'"';
@@ -122,7 +135,7 @@ class SegundoModulo extends Conexion{
             !isset($datos['fechaFin']) ||
             !isset($datos['fusion']) ||
             !isset($datos['estado'])){
-                var_dump($datos);
+               
                 return $respuestas->error_400();
         }else {
             $this->id = $datos['id'];
@@ -162,7 +175,7 @@ class SegundoModulo extends Conexion{
             $query = "INSERT INTO segundoModulo(id, idPrimerModulo, idPedido, idMaquinaProceso, descripcio, idUsuario, cantidadInicio, cantidadFinal, fechainicio, fechaFin, fusion, estado) VALUES".
             "(null, ".$this->idPrimerModulo.", ".$this->idPedido.", ".$this->idMaquinaProceso.", '".$this->descripcio."', ".$this->idUsuario.", ".$this->cantidadInicio.", ".$this->cantidadFinal.", '".$this->fechainicio."', '".$this->fechaFin."', '".$this->fusion."', '".$this->estado."'  )";
         }
-        var_dump($query);
+      
         $res = parent::nonQueryIds($query);
 
 
