@@ -95,8 +95,7 @@ class SegundoModulo extends Conexion{
 
 
     public function mostrarSegundoModulo($estado){
-        $query = 'select pm.id as folio, pm.descripcion, pmd.idPieza, p.nombre as nombrePieza, pmd.idColor, pmd.talla, pmd.cantidad, pm.estado, pmd.colorPrimario, pmd.colorSecundario, pmd.colorTerciario
-        from primerModulo pm join primerModuloDesglose pmd on pm.id=pmd.idPrimerModulo join pieza p on pmd.idPieza=p.id Where pm.estado="'.$estado.'"';
+        $query = 'select sm.idMaquinaProceso, sm.idPrimerModulo from segundoModulo sm join primerModulo pm on pm.id=sm.idPrimerModulo where sm.estado= '.$estado.' and pm.estado = 1';
 
         $respuesta = parent::obtenerDatos($query);
 
