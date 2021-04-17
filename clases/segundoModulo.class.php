@@ -33,7 +33,7 @@ class SegundoModulo extends Conexion{
     }
 
     public function obtenerSegundoModulo($idMaquinaProceso){
-        $query 'select * from segundoModulo where idMaquinaProceso="'.$idMaquinaProceso.'"';
+        $query = 'select * from segundoModulo where idMaquinaProceso="'.$idMaquinaProceso.'"';
 
         $datos = parent::obtenerDatos($query);
 
