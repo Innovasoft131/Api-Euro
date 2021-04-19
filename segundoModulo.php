@@ -86,10 +86,10 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
       
         echo json_encode($respuesta);
 
-    }elseif(isset($_GET["idMaquinaProceso"])){
-        $idMaquinaProceso = $_GET["idMaquinaProceso"];
+    }elseif(isset($_GET["idMaquina"])){
+        $idMaquina = $_GET["idMaquina"];
 
-        $respuesta = $segundoModulo ->obtenerSegundoModulo($idMaquinaProceso);
+        $respuesta = $segundoModulo ->obtenerSegundoModulo($idMaquina);
 
         header('Content-Type: application/json');
         http_response_code(200);

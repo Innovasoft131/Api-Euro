@@ -36,7 +36,21 @@ if($_SERVER['REQUEST_METHOD'] == "GET"){
 
 
 } elseif($_SERVER['REQUEST_METHOD'] == "PUT") {
-    echo "funcion editar esta en desarrollo";
+    // recibimos datos
+    $postBody = file_get_contents("php://input");
+    //enviamos los datos a procesar
+    $res = $primerModulo->edit($postBody);
+    // devolvemos una respuesta
+    header('Content-Type: application/json');
+    if(isset($res["result"]["error_id"])){   
+        $responsoCode = $res["result"]["error_id"];
+        http_response_code($responsoCode);
+    }else{
+        http_response_code(200);
+    }
+    
+        echo json_encode($res);
+
 }elseif($_SERVER['REQUEST_METHOD'] == "DELETE") {
     echo "funcion eliminar esta en desarrollo";
 }else{

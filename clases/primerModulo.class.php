@@ -4,6 +4,7 @@ require_once 'clases/respuestas.class.php';
 class PrimerModulo extends Conexion{
 
     private $tabla = "primerModulo";
+    private $idPrimerModulo = "";
     private $idcliente = "";
     private $idPedido = "";
     private $idPieza = "";
@@ -77,6 +78,40 @@ class PrimerModulo extends Conexion{
                 }
             }
 
+    }
+
+    public function edit($json){
+        $respuestas = new Respuestas();
+        $datos = json_decode($json, true);
+        if(!isset($datos['estado']) || !isset($datos['idPrimerModulo'])){
+            return $respuestas->error_400();
+        }else{
+            $this->estado = $datos['estado'];
+            $this->idPrimerModulo = $datos['idPrimerModulo'];
+            $res = $this->editarEstado();
+
+            if($res == "ok"){
+                $respuesta = $respuestas -> response;
+                $respuesta['result'] = array(
+                    "resultado" => "Guardado"
+                );
+                return $respuesta;
+            }else{
+                return $respuestas->error_500();
+            }
+        }
+
+    }
+
+    private function editarEstado(){
+        $query = 'update primerModulo set estado= '.$this->estado.' where id='.$this->idPrimerModulo;
+        $res = parent::nonQueryId($query);
+
+        if($res == "ok"){
+           return "ok";
+        }else{
+            return "error";
+        }
     }
 
     private function insetarPrimerModulo(){

@@ -20,7 +20,7 @@ class SegundoModulo extends Conexion{
         $respuestas = new Respuestas();
         $query = 'select pm.idPedido, pm.id as idPrimerModulo, pmd.id as idprimerModuloDesglose, mp.id as idmaquinasProceso, pmd.idPieza, p.nombre as NombrePieza, p.idModelo, pmd.idTalla,  mo.nombre as NombreModelo, mp.cantidad, pt.talla as tallaPieza, pmd.idColor, c.nombre as nombreColor, ph.fecha as fechaPedido  from primerModulo pm join primerModuloDesglose pmd on pm.id=pmd.idPrimerModulo join maquinasProceso mp on mp.idPrimerModuloD=pmd.id 
         join piezaTalla pt on pt.id=pmd.idTalla join pieza p on pmd.idPieza = p.id join modelo mo on p.idModelo=mo.id join colorPieza cp on cp.id = pmd.idColor join color c on cp.idColor = c.id join pedidosHechos ph on pm.idPedido=ph.id
-        where mp.idMaquina="'.$id.'"';
+        where mp.idMaquina="'.$id.'" and pm.estado=1';
 
         $datos = parent::obtenerDatos($query);
 
@@ -32,8 +32,12 @@ class SegundoModulo extends Conexion{
         
     }
 
-    public function obtenerSegundoModulo($idMaquinaProceso){
-        $query = 'select * from segundoModulo where idMaquinaProceso="'.$idMaquinaProceso.'"';
+    public function obtenerSegundoModulo($idMaquina){
+        $respuestas = new Respuestas();
+        $query = 'select sm.*, p.nombre as pieza, pt.talla, mp.cantidad as cantidad_en_maquina, ph.fecha as fecha_pedido, m.nombre as modelo, cp.idColor, c.nombre as color  from segundomodulo sm join primermodulo pm on pm.id=sm.idPrimerModulo join maquinasproceso mp  on sm.idMaquinaProceso = mp.id
+        join primermodulodesglose pmd on pmd.id = pm.id join pieza p on p.id = pmd.idPieza join piezatalla pt on pmd.idTalla = pt.id  join pedidos pe on pe.id = sm.idPedido join pedidoshechos ph on ph.id = pe.idpedidosHechos
+        join modelo m on m.id = p.idModelo join colorpieza cp on cp.id = pe.idColor join color c on c.id = cp.idColor
+        where pm.idPedido=sm.idPedido and mp.idPrimerModulo=sm.idPrimerModulo and mp.idMaquina ="'.$idMaquina.'" and (sm.estado = 0 and pm.estado = 2)';
 
         $datos = parent::obtenerDatos($query);
 
@@ -156,6 +160,7 @@ class SegundoModulo extends Conexion{
             if($res > 0){
                 $respuesta = $respuestas -> response;
                     $respuesta['result'] = array(
+                        "idPrimerModulo" => $this->idPrimerModulo,
                         "idSegundoModulo" => $res,
                         "resultado" => "Guardado"
                     );
