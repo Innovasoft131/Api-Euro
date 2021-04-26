@@ -3,7 +3,8 @@ require_once 'conexion/conexion.php';
 require_once 'clases/respuestas.class.php';
 class PrimerModulo extends Conexion{
 
-    private $tabla = "primerModulo";
+    private $tabla = "";
+    private $id = "";
     private $idPrimerModulo = "";
     private $idcliente = "";
     private $idPedido = "";
@@ -49,9 +50,13 @@ class PrimerModulo extends Conexion{
             !isset($datos['colorSecundario']) ||
             !isset($datos['colorTerciario']) ||
             !isset($datos['descripcion']) ||
+            !isset($datos['tabla']) ||
+            !isset($datos['id']) ||
             !isset($datos['estado']) ){
                 return $respuestas->error_400();
             }else{
+                $this->tabla = $datos['tabla'];
+                $this->id = $datos['id'];
                 $this->idcliente = $datos['idcliente'];
                 $this->idPedido = $datos['idPedido'];
                 $this->idPieza = $datos['idPieza'];
@@ -83,11 +88,14 @@ class PrimerModulo extends Conexion{
     public function edit($json){
         $respuestas = new Respuestas();
         $datos = json_decode($json, true);
-        if(!isset($datos['estado']) || !isset($datos['idPrimerModulo'])){
+        if(!isset($datos['estado']) || !isset($datos['idPrimerModulo']) || !isset($datos['id']) || !isset($datos['tabla'])){
+           
             return $respuestas->error_400();
         }else{
             $this->estado = $datos['estado'];
             $this->idPrimerModulo = $datos['idPrimerModulo'];
+            $this->id = $datos['id'];
+            $this->tabla = $datos['tabla'];
             $res = $this->editarEstado();
 
             if($res == "ok"){
@@ -104,7 +112,8 @@ class PrimerModulo extends Conexion{
     }
 
     private function editarEstado(){
-        $query = 'update primerModulo set estado= '.$this->estado.' where id='.$this->idPrimerModulo;
+        $query = 'update '.$this->tabla.' set estado= '.$this->estado.' where '.$this->id.'='.$this->idPrimerModulo;
+        var_dump($query);
         $res = parent::nonQueryId($query);
 
         if($res == "ok"){

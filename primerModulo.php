@@ -20,7 +20,7 @@ if($_SERVER['REQUEST_METHOD'] == "GET"){
     $postBody = file_get_contents("php://input");
 
     //enviamos los datos a procesar
-    $res = $primerModulo->post($postBody);
+    $res = $primerModulo->edit($postBody);
     
     // devolvemos una respuesta
     header('Content-Type: application/json');

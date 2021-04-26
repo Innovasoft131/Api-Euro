@@ -63,7 +63,7 @@ class ProblemasProceso extends Conexion{
         
         
         
-        
+       
         $res = parent::nonQueryIds($query);
 
         return $res;
