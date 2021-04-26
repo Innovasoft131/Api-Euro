@@ -16,7 +16,14 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
       
         echo json_encode($datosTercerModulo);
       
-    }else {
+    }elseif(isset($_GET['idMaquina'])){
+        $id = $_GET['idMaquina'];
+        $datosTercerModulo = $tercerModulo->mostrarEnProceso($id);
+        header('Content-Type: application/json');
+        http_response_code(200);
+      
+        echo json_encode($datosTercerModulo);
+    } else {
         header('Content-Type: application/json');
         $datosArr = $respuestas->error_405();   
         echo json_encode($datosArr);

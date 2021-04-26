@@ -40,8 +40,20 @@ class ProblemasDesglose extends Conexion{
     }
 
     private function insertar(){
-        $query = "INSERT INTO problemasDesglose(id, idProblemaProce, idProblema, problema) VALUES
-        (NULL, ".$this->idProblemaProce.", ".$this->idProblema.", '".$this->problema."')";
+        if($this->idProblema == null || $this->idProblema == ""){
+            $query = "INSERT INTO problemasDesglose(id, idProblemaProce, idProblema, problema) VALUES
+            (NULL, ".$this->idProblemaProce.", NULL, '".$this->problema."')";
+        }elseif($this->problema != null || $this->problema == ""){
+            $query = "INSERT INTO problemasDesglose(id, idProblemaProce, idProblema, problema) VALUES
+            (NULL, ".$this->idProblemaProce.", ".$this->idProblema.", NULL)";
+        }elseif($this->problema != null || $this->problema == "" && $this->idProblema == null || $this->idProblema == ""){
+            $query = "INSERT INTO problemasDesglose(id, idProblemaProce, idProblema, problema) VALUES
+            (NULL, ".$this->idProblemaProce.", NULL, NULL)";
+        }elseif($this->id != null || $this->id == ""){
+            $query = "INSERT INTO problemasDesglose(id, idProblemaProce, idProblema, problema) VALUES
+            (NULL, ".$this->idProblemaProce.", ".$this->idProblema.", NULL)";
+        }
+
 
         
         $res = parent::nonQueryId($query);

@@ -31,6 +31,16 @@ class TercerModulo extends Conexion{
         return $datos;
     }
 
+    public function mostrarEnProceso($id){
+        $query = 'select pmd.*, mp.cantidad as cantidad_pieza, c.nombre as color, pt.talla, ph.fecha as fecha_pedido, pm.idPedido, p.nombre as nombre_pieza, m.nombre as nombre_modelo  from primerModulo pm join primermodulodesglose pmd on pmd.idPrimerModulo=pm.id join maquinasproceso mp on mp.idPrimerModuloD=pmd.id
+        join colorPieza cp on pmd.idColor = cp.id join color c on c.id = cp.idColor join piezaTalla pt on  pmd.idTalla = pt.id join pedidosHechos ph on ph.id = pm.idPedido
+        join pieza p on p.id = pmd.idPieza join modelo m on m.id = p.idModelo join segundoModulo sm on sm.idPrimerModulo=pmd.idPrimerModulo join tercerModulo tm on tm.idsegundoModulo = sm.id
+        where mp.idMaquina ="'.$id.'" and ( pm.estado = 1 and mp.estado = 1 and sm.estado=1 and tm.estado = 1)';
+
+        $datos = parent::obtenerDatos($query);
+        return $datos;
+    }
+
     public function insert($json){
         $respuestas = new Respuestas();
         $datos = json_decode($json, true);
