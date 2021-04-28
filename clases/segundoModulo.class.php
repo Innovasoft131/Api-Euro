@@ -13,6 +13,7 @@ class SegundoModulo extends Conexion{
     private $idPrimerModuloD = "";
     private $descripcio = "";
     private $idUsuario = "";
+    private $CantidadRecibida = "";
     private $cantidadInicio = "";
     private $cantidadFinal = "";
     private $fechainicio = "0000-00-00 00:00:00";
@@ -39,7 +40,7 @@ class SegundoModulo extends Conexion{
 
     public function obtenerSegundoModulo($idMaquina){
         $respuestas = new Respuestas();
-        $query = 'select sm.*, pt.talla, c.nombre as color, p.nombre as nombre_pieza, m.nombre as nombre_modelo, ph.fecha as fecha_pedido, mp.cantidad as cantidad_maquina from segundoModulo sm join primerModuloDesglose pmd on sm.idPrimerModuloD = pmd.id join primerModulo pm on sm.idPrimerModulo = pm.id join maquinasProceso mp on sm.idMaquinaProceso= mp.id
+        $query = 'select sm.*, pt.talla, c.nombre as color, p.nombre as nombre_pieza, m.nombre as nombre_modelo, ph.fecha as fecha_pedido, mp.cantidad as cantidad_maquina, sm.CantidadRecibida from segundoModulo sm join primerModuloDesglose pmd on sm.idPrimerModuloD = pmd.id join primerModulo pm on sm.idPrimerModulo = pm.id join maquinasProceso mp on sm.idMaquinaProceso= mp.id
         join piezaTalla pt on sm.idTalla = pt.id join colorPieza cp on cp.id = sm.idColor join color c on c.id = cp.idColor join pieza p on p.id = sm.idPieza join modelo m on m.id = sm.idPieza
         join pedidosHechos ph on ph.id = sm.idPedido
         where mp.idMaquina ="'.$idMaquina.'" and (pm.estado = 1 and mp.estado = 1 and sm.estado = 0)';
@@ -141,6 +142,7 @@ class SegundoModulo extends Conexion{
             !isset($datos['idPrimerModuloD']) ||
             !isset($datos['descripcio']) ||
             !isset($datos['idUsuario']) ||
+            !isset($datos['CantidadRecibida']) ||
             !isset($datos['cantidadInicio']) ||
             !isset($datos['cantidadFinal']) ||
             !isset($datos['fechainicio']) ||
@@ -160,6 +162,7 @@ class SegundoModulo extends Conexion{
             $this->idPrimerModuloD = $datos['idPrimerModuloD'];
             $this->descripcio = $datos['descripcio'];
             $this->idUsuario = $datos['idUsuario'];
+            $this->CantidadRecibida = $datos['CantidadRecibida'];
             $this->cantidadInicio = $datos['cantidadInicio'];
             $this->cantidadFinal = $datos['cantidadFinal'];
             $this->fechainicio = $datos['fechainicio'];
@@ -186,11 +189,11 @@ class SegundoModulo extends Conexion{
 
     private function insertar(){
         if($this->descripcio == null || $this->descripcio == "" || $this->fechaFin == null || $this->fechaFin == "" || $this->fusion == null || $this->fusion == ""){
-            $query = "INSERT INTO segundoModulo(id, idPrimerModulo, idPedido, idMaquinaProceso, idPieza, idColor, idTalla, idPrimerModuloD, descripcio, idUsuario, cantidadInicio, cantidadFinal, fechainicio, fechaFin, fusion, estado) VALUES".
-            "(null, ".$this->idPrimerModulo.", ".$this->idPedido.", ".$this->idMaquinaProceso.", ".$this->idPieza.", ".$this->idColor.", ".$this->idTalla.", ".$this->idPrimerModuloD.", null, ".$this->idUsuario.", ".$this->cantidadInicio.", ".$this->cantidadFinal.", now(), null, null, '".$this->estado."'  )";
+            $query = "INSERT INTO segundoModulo(id, idPrimerModulo, idPedido, idMaquinaProceso, idPieza, idColor, idTalla, idPrimerModuloD, descripcio, idUsuario, CantidadRecibida, cantidadInicio, cantidadFinal, fechainicio, fechaFin, fusion, estado) VALUES".
+            "(null, ".$this->idPrimerModulo.", ".$this->idPedido.", ".$this->idMaquinaProceso.", ".$this->idPieza.", ".$this->idColor.", ".$this->idTalla.", ".$this->idPrimerModuloD.", null, ".$this->idUsuario.", ".$this->CantidadRecibida.",  ".$this->cantidadInicio.", ".$this->cantidadFinal.", now(), null, null, '".$this->estado."'  )";
         }else{
-            $query = "INSERT INTO segundoModulo(id, idPrimerModulo, idPedido, idMaquinaProceso, idPieza, idColor, idTalla, idPrimerModuloD, descripcio, idUsuario, cantidadInicio, cantidadFinal, fechainicio, fechaFin, fusion, estado) VALUES".
-            "(null, ".$this->idPrimerModulo.", ".$this->idPedido.", ".$this->idMaquinaProceso.",  ".$this->idPieza.", ".$this->idColor.", ".$this->idTalla.", ".$this->idPrimerModuloD.", '".$this->descripcio."', ".$this->idUsuario.", ".$this->cantidadInicio.", ".$this->cantidadFinal.", '".$this->fechainicio."', '".$this->fechaFin."', '".$this->fusion."', '".$this->estado."'  )";
+            $query = "INSERT INTO segundoModulo(id, idPrimerModulo, idPedido, idMaquinaProceso, idPieza, idColor, idTalla, idPrimerModuloD, descripcio, idUsuario, CantidadRecibida, cantidadInicio, cantidadFinal, fechainicio, fechaFin, fusion, estado) VALUES".
+            "(null, ".$this->idPrimerModulo.", ".$this->idPedido.", ".$this->idMaquinaProceso.",  ".$this->idPieza.", ".$this->idColor.", ".$this->idTalla.", ".$this->idPrimerModuloD.", '".$this->descripcio."', ".$this->idUsuario.", ".$this->CantidadRecibida.",  ".$this->cantidadInicio.", ".$this->cantidadFinal.", '".$this->fechainicio."', '".$this->fechaFin."', '".$this->fusion."', '".$this->estado."'  )";
         }
       
         $res = parent::nonQueryIds($query);

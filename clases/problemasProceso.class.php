@@ -42,7 +42,10 @@ class ProblemasProceso extends Conexion{
     }
 
     private function insertar(){
-        if($this->idprimerModulo == "" && $this->idSegundoModulo == "" && $this->idtercerModulo == ""){
+        if($this->id == "" && $this->idprimerModulo == "" && $this->idSegundoModulo == "" && $this->idtercerModulo == "" && $this->idPedido == "" ){
+            $query = 'INSERT INTO problemasProceso(id, idPedido, idprimerModulo, idSegundoModulo, idtercerModulo) VALUES
+            (null, null, null, null, null)';
+        }elseif($this->idprimerModulo == "" && $this->idSegundoModulo == "" && $this->idtercerModulo == ""){
             $query = 'INSERT INTO problemasProceso(id, idPedido, idprimerModulo, idSegundoModulo, idtercerModulo) VALUES
             (null, '.$this->idPedido.', null, null, null)';
         }elseif($this->idprimerModulo != "" && $this->idSegundoModulo == "" && $this->idtercerModulo == ""){
@@ -56,13 +59,16 @@ class ProblemasProceso extends Conexion{
         }elseif($this->idtercerModulo != "" && $this->idprimerModulo == "" && $this->idSegundoModulo == ""){
             $query = 'INSERT INTO problemasProceso(id, idPedido, idprimerModulo, idSegundoModulo, idtercerModulo) VALUES
             (null, '.$this->idPedido.', null, null, '.$this->idtercerModulo.')';
+        }elseif($this->idPedido == "" && $this->idPedido == null){
+                $query = 'INSERT INTO problemasProceso(id, idPedido, idprimerModulo, idSegundoModulo, idtercerModulo) VALUES
+                (null, NULL, '.$this->idprimerModulo.', '.$this->idSegundoModulo.', '.$this->idtercerModulo.')';
         }else{
             $query = 'INSERT INTO problemasProceso(id, idPedido, idprimerModulo, idSegundoModulo, idtercerModulo) VALUES
             (null, '.$this->idPedido.', '.$this->idprimerModulo.', '.$this->idSegundoModulo.', '.$this->idtercerModulo.')';
         }
         
         
-        
+
        
         $res = parent::nonQueryIds($query);
 
